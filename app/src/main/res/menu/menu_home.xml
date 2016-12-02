@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.clabs.codefosterapp.HomeActivity">
+    <item
+        android:id="@+id/add_event"
+        android:orderInCategory="100"
+        android:title="Add Event"
+        app:showAsAction="always"
+        android:icon="@mipmap/ic_add_white_24dp"/>
+
+    <item
+        app:showAsAction="never"
+        android:id="@+id/setting"
+        android:title="@string/action_settings"
+        />
+</menu>

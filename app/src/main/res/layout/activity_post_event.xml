@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_scrollFlags="scroll|enterAlways" />
+
+        <ImageButton
+            android:id="@+id/add_image_button"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_below="@+id/toolbar"
+            android:adjustViewBounds="true"
+            android:background="#00ffffff"
+            android:scaleType="centerCrop"
+            android:src="@drawable/add_event"/>
+
+        <EditText
+            android:id="@+id/heading_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/add_image_button"
+            android:layout_centerVertical="true"
+            android:layout_margin="20dp"
+            android:background="@drawable/input_outline"
+            android:hint="Type Heading Here..."
+            android:padding="16dp"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/description_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/heading_text_view"
+
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/input_outline"
+            android:ems="10"
+            android:hint="Post Description Here..."
+            android:inputType="textMultiLine"
+            android:padding="16dp"
+            android:textSize="16sp"
+            />
+
+        <Button
+            android:id="@+id/submit_post_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/primary"
+            android:text="Submit"
+            android:textColor="@color/icons"
+            android:textSize="16sp"
+            />
+    </RelativeLayout>
