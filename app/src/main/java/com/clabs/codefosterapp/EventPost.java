@@ -14,6 +14,8 @@ public class EventPost {
         this.postHeading = postHeading;
         this.postDesc = postDesc;
     }
+    public EventPost() {
+    }
 
     public String getDownloadUrl() {
         return downloadUrl;

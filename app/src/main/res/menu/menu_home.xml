@@ -5,8 +5,8 @@
     <item
         android:id="@+id/add_event"
         android:orderInCategory="100"
-        android:title="Add Event"
-        app:showAsAction="always"
+        android:title="@string/add_post"
+        app:showAsAction="ifRoom"
         android:icon="@mipmap/ic_add_white_24dp"/>
 
     <item

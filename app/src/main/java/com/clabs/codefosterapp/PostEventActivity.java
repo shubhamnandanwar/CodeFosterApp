@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -35,12 +34,11 @@ import java.util.Locale;
 public class PostEventActivity extends AppCompatActivity {
 
     public static final int GALLERY_REQUEST = 1;
-    ImageButton addImageButton;
-    EditText postHeading;
-    EditText postDescription;
-    Button submitPost;
-    Uri imageUri;
-    ProgressDialog progressDialog;
+    private ImageButton addImageButton;
+    private EditText postHeading;
+    private EditText postDescription;
+    private Uri imageUri;
+    private ProgressDialog progressDialog;
 
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
@@ -54,7 +52,7 @@ public class PostEventActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            Drawable upArrow = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_keyboard_backspace_white_24dp);
+            Drawable upArrow = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.ic_keyboard_backspace_white_24dp);
             upArrow.mutate().setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.primary), PorterDuff.Mode.SRC_ATOP);
             actionBar.setHomeAsUpIndicator(upArrow);
             actionBar.setDisplayShowTitleEnabled(true);
@@ -67,7 +65,7 @@ public class PostEventActivity extends AppCompatActivity {
         addImageButton = (ImageButton) findViewById(R.id.add_image_button);
         postDescription = (EditText) findViewById(R.id.description_text_view);
         postHeading = (EditText) findViewById(R.id.heading_text_view);
-        submitPost = (Button) findViewById(R.id.submit_post_button);
+        Button submitPost = (Button) findViewById(R.id.submit_post_button);
         submitPost.setOnClickListener(submitPostListener);
 
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -89,33 +87,38 @@ public class PostEventActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             progressDialog.show();
-            String heading = postHeading.getText().toString().trim();
-            String desc = postDescription.getText().toString().trim();
-            if(!TextUtils.isEmpty(heading)&&!TextUtils.isEmpty(desc)&&imageUri!=null){
+            final String heading = postHeading.getText().toString().trim();
+            final String desc = postDescription.getText().toString().trim();
+            if (!TextUtils.isEmpty(heading) && !TextUtils.isEmpty(desc) && imageUri != null) {
 
                 DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyhhmmss", Locale.getDefault());
                 Date date = new Date();
                 String str = dateFormat.format(date);
-                String fname = "Coder_" + str + ".jpg";
-                StorageReference filePath = storageReference.child("Blob_Images").child(fname);
+                String fileName = "Coder_" + str + ".jpg";
+                StorageReference filePath = storageReference.child("Blob_Images").child(fileName);
                 filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Uri downloadUri = taskSnapshot.getDownloadUrl();
-                        Snackbar.make(postDescription,"Successfully Posted",Snackbar.LENGTH_LONG).show();
-                        progressDialog.dismiss();
+                        Snackbar.make(postDescription, "Successfully Posted", Snackbar.LENGTH_LONG).show();
+                        if (downloadUri != null) {
+                            EventPost eventPost = new EventPost(downloadUri.toString(), heading, desc);
+                            DatabaseReference newPost = databaseReference.push();
+                            newPost.setValue(eventPost);
+                            progressDialog.dismiss();
+                        }
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Snackbar.make(postDescription,"Posting Failed",Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(postDescription, "Posting Failed", Snackbar.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }
                 });
 
-            }
-            else{
-                Snackbar.make(postDescription,"Fill details",Snackbar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(postDescription, "Fill details", Snackbar.LENGTH_SHORT).show();
             }
         }
     };
@@ -124,7 +127,7 @@ public class PostEventActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
-           imageUri  = data.getData();
+            imageUri = data.getData();
             addImageButton.setImageURI(imageUri);
         }
     }
@@ -134,6 +137,5 @@ public class PostEventActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home)
             finish();
         return super.onOptionsItemSelected(item);
-
     }
 }
